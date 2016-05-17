@@ -100,7 +100,7 @@ mariadb:
     - MARIADB_PASSWORD=my-password
     - MARIADB_DATABASE=subriondb
   volumes:
-    - ./mariadb-data:/bitnami/mariadb/data
+    - ./mariadb-data:/bitnami/mariadb
 
 subrion:
   image: bitnami/php-fpm
