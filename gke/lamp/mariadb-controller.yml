@@ -15,9 +15,7 @@ spec:
     spec:
       containers:
         - name: mariadb
-          image: bitnami/mariadb:5.5.46-0-r01
-          args:
-            - --max_connect_errors=1000
+          image: bitnami/mariadb:10.1.13-r0
           env:
             - name: MARIADB_USER
               value: myapp
@@ -30,7 +28,7 @@ spec:
               name: mariadb
           volumeMounts:
             - name: mariadb-persistent-storage
-              mountPath: /bitnami/mariadb/data
+              mountPath: /bitnami/mariadb
           livenessProbe:
             tcpSocket:
               port: 3306

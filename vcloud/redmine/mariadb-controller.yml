@@ -15,9 +15,7 @@ spec:
     spec:
       containers:
         - name: mariadb
-          image: bitnami/mariadb:5.5.45-0-r01
-          args:
-            - --max_connect_errors=1000
+          image: bitnami/mariadb:10.1.13-r0
           env:
             - name: MARIADB_DATABASE
               value: redmine_production
