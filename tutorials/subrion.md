@@ -94,7 +94,7 @@ The following `docker-compose.yml` file will be used to orchestrate the launch o
 
 ```yaml
 mariadb:
-  image: bitnami/mariadb
+  image: bitnami/mariadb:10.1.13-r0
   environment:
     - MARIADB_USER=subrion
     - MARIADB_PASSWORD=my-password

@@ -106,13 +106,13 @@ Create a file named `docker-compose.yml` in your project directory with the foll
 
 ```yaml
 mariadb:
-  image: bitnami/mariadb
+  image: bitnami/mariadb:10.1.13-r0
   environment:
     - MARIADB_USER=redmine
     - MARIADB_PASSWORD=my-password
     - MARIADB_DATABASE=redminedb
   volumes:
-    - ./mariadb-data:/bitnami/mariadb/data
+    - ./mariadb-data:/bitnami/mariadb
 
 redmine:
   image: bitnami/ruby
@@ -138,7 +138,7 @@ nginx:
 
 The `docker-compose.yml` file will be used to orchestrate the launch of the MariaDB, Ruby and nginx containers using docker-compose.
 
-In the docker compose definition we specified the `MARIADB_USER`, `MARIADB_PASSWORD` and `MARIADB_DATABASE` parameters in the environment of the MariaDB container. The MariaDB container uses these parameters to setup a user and database on the first run. We have setup these variables according to the `database.yml` configuration above. The volume mounted at the `/bitnami/mariadb/data` path of the container ensures persistence of the MariaDB data.
+In the docker compose definition we specified the `MARIADB_USER`, `MARIADB_PASSWORD` and `MARIADB_DATABASE` parameters in the environment of the MariaDB container. The MariaDB container uses these parameters to setup a user and database on the first run. We have setup these variables according to the `database.yml` configuration above. The volume mounted at the `/bitnami/mariadb` path of the container ensures persistence of the MariaDB data.
 
 We use the `volumes` property to mount the Redmine application source in the Ruby container at the `/app` path of the container. The link to the MariaDB container allows the Ruby container to access the database server using the `mariadb` hostname.
 
