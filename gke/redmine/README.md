@@ -14,7 +14,6 @@
   + [Create Google cloud storage bucket](#create-google-cloud-storage-bucket)
   + [Redmine secret store](#redmine-secret-store)
   + [Redmine pod and service](#redmine-pod-and-service)
-- [Allow external traffic](#allow-external-traffic)
 - [Access your Redmine server](#access-your-redmine-server)
 - [Scaling the Redmine application](#scaling-the-redmine-application)
 - [Take down and restart Redmine](#take-down-and-restart-redmine)
@@ -351,37 +350,6 @@ $ kubectl get services redmine
 NAME      CLUSTER_IP      EXTERNAL_IP   PORT(S)   SELECTOR       AGE
 redmine   10.99.248.175                 80/TCP    name=redmine   11s
 ```
-
-## Allow external traffic
-
-By default, the pod is only accessible by its internal IP within the cluster. In order to make the Redmine service accessible from the Internet we have to open port 80.
-
-First we need to get the node prefix for the cluster using `kubectl get nodes`:
-
-```bash
-$ kubectl get nodes
-NAME                             LABELS                                                  STATUS    AGE
-gke-redmine-a42d5fda-node-e58w   kubernetes.io/hostname=gke-redmine-a42d5fda-node-e58w   Ready     5h
-gke-redmine-a42d5fda-node-udcs   kubernetes.io/hostname=gke-redmine-a42d5fda-node-udcs   Ready     5h
-gke-redmine-a42d5fda-node-zti8   kubernetes.io/hostname=gke-redmine-a42d5fda-node-zti8   Ready     5h
-```
-
-The value of `--target-tag` in the command below is the node prefix for the cluster up to `-node`.
-
-```bash
-$ gcloud compute firewall-rules create --allow=tcp:80 \
-    --target-tags=gke-redmine-a42d5fda-node redmine-http
-```
-
-A successful response looks like:
-
-```bash
-Created [.../projects/docker-opensource/global/firewalls/redmine-http].
-NAME         NETWORK SRC_RANGES RULES  SRC_TAGS TARGET_TAGS
-redmine-http default 0.0.0.0/0  tcp:80          gke-redmine-a42d5fda-node
-```
-
-Alternatively, you can open up port 80 from the [Developers Console](https://console.developers.google.com/).
 
 ## Access your Redmine server
 

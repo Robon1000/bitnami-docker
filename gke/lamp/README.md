@@ -16,7 +16,6 @@
   + [MyApp pod and service](#myapp-pod-and-service)
 - [Apache](#apache)
   + [Apache pod and service](#apache-pod-and-service)
-- [Allow external traffic](#allow-external-traffic)
 - [Access your MyApp server](#access-your-myapp-server)
 - [Scaling MyApp](#scaling-myapp)
 - [Take down and restart MyApp](#take-down-and-restart-myapp)
@@ -320,37 +319,6 @@ $ kubectl get services myapp-apache
 NAME           CLUSTER_IP      EXTERNAL_IP   PORT(S)   SELECTOR            AGE
 myapp-apache   10.115.245.91                 80/TCP    name=myapp-apache   4s
 ```
-
-## Allow external traffic
-
-By default, the pod is only accessible by its internal IP within the cluster. In order to make the Apache service accessible from the internet we have to open the TCP port `80`.
-
-First we need to get the node prefix for the cluster using:
-
-```bash
-$ kubectl get nodes
-NAME                           LABELS                                                STATUS    AGE
-gke-myapp-21b6159e-node-amen   kubernetes.io/hostname=gke-myapp-21b6159e-node-amen   Ready     16m
-gke-myapp-21b6159e-node-v54r   kubernetes.io/hostname=gke-myapp-21b6159e-node-v54r   Ready     16m
-gke-myapp-21b6159e-node-z5im   kubernetes.io/hostname=gke-myapp-21b6159e-node-z5im   Ready     16m
-```
-
-The value of `--target-tag` in the command below is the node prefix for the cluster up to `-node`.
-
-```bash
-$ gcloud compute firewall-rules create --allow=tcp:80 \
-    --target-tags=gke-myapp-21b6159e-node myapp-http
-```
-
-A successful response looks like:
-
-```bash
-Created [.../projects/bitnami-tutorials/global/firewalls/myapp-http].
-NAME       NETWORK SRC_RANGES RULES  SRC_TAGS TARGET_TAGS
-myapp-http default 0.0.0.0/0  tcp:80          gke-myapp-21b6159e-node
-```
-
-Alternatively, you can open up port `80` from the [Developers Console](https://console.developers.google.com/).
 
 ## Access your MyApp server
 

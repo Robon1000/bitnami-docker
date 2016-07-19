@@ -18,7 +18,6 @@
   + [Wordpress pod and service](#wordpress-pod-and-service)
 - [Apache](#apache)
   + [Apache pod and service](#apache-pod-and-service)
-- [Allow external traffic](#allow-external-traffic)
 - [Access your Wordpress server](#access-your-wordpress-server)
 - [Scaling the Wordpress blog](#scaling-the-wordpress-blog)
 - [Take down and restart Wordpress](#take-down-and-restart-wordpress)
@@ -405,37 +404,6 @@ $ kubectl get services wordpress-apache
 NAME               CLUSTER_IP      EXTERNAL_IP   PORT(S)   SELECTOR                AGE
 wordpress-apache   10.247.244.54                 80/TCP    name=wordpress-apache   7s
 ```
-
-## Allow external traffic
-
-By default, the pod is only accessible by its internal IP within the cluster. In order to make the Apache service accessible from the internet we have to open the TCP port `80`.
-
-First we need to get the node prefix for the cluster using:
-
-```bash
-$ kubectl get nodes
-NAME                               LABELS                                                    STATUS    AGE
-gke-wordpress-18fd6946-node-6i6t   kubernetes.io/hostname=gke-wordpress-18fd6946-node-6i6t   Ready     6m
-gke-wordpress-18fd6946-node-8r7a   kubernetes.io/hostname=gke-wordpress-18fd6946-node-8r7a   Ready     6m
-gke-wordpress-18fd6946-node-zxm5   kubernetes.io/hostname=gke-wordpress-18fd6946-node-zxm5   Ready     6m
-```
-
-The value of `--target-tag` in the command below is the node prefix for the cluster up to `-node`.
-
-```bash
-$ gcloud compute firewall-rules create --allow=tcp:80 \
-    --target-tags=gke-wordpress-18fd6946-node wordpress-http
-```
-
-A successful response looks like:
-
-```bash
-Created [.../projects/docker-opensource/global/firewalls/wordpress-http].
-NAME           NETWORK SRC_RANGES RULES  SRC_TAGS TARGET_TAGS
-wordpress-http default 0.0.0.0/0  tcp:80          gke-wordpress-18fd6946-node
-```
-
-Alternatively, you can open up port `80` from the [Developers Console](https://console.developers.google.com/).
 
 ## Access your Wordpress server
 
