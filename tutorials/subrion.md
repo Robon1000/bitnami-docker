@@ -57,6 +57,7 @@ mkdir apache-vhost
 Create a file named `subrion.conf` in the `apache-vhost` directory with the following contents.
 
 ```apache
+LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so
 <VirtualHost *:80>
   ServerName subrion.example.com
   DocumentRoot "/app"
@@ -69,9 +70,9 @@ Create a file named `subrion.conf` in the `apache-vhost` directory with the foll
 </VirtualHost>
 ```
 
-In this configuration, the `ProxyPassMatch` parameter ensures that all php script parsing tasks are delegated to the PHP-FPM container using the FastCGI interface. The `ServerName` parameter specifies the hostname for our Subrion application.
+In this configuration, the `ProxyPassMatch` directive ensures that all php script parsing tasks are delegated to the PHP-FPM container using the FastCGI interface. The `ServerName` directive specifies the hostname for our Subrion application. The `LoadModule` directive enables the `mod_proxy_fcgi` Apache extension needed by Subrion.
 
-Notice that the hostname we've used for connecting to PHP-FPM is `php-fpm`, we will use this as the alias when linking the PHP-FPM container to the apache container in the docker compose definition.
+Notice that the hostname we've used for connecting to PHP-FPM is `php-fpm`. We will use this as the alias when linking the PHP-FPM container to the Apache container in the Docker Compose definition.
 
 # Using Docker Compose
 
