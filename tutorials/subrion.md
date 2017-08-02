@@ -123,9 +123,9 @@ services:
     ports:
       - 80:80
     depends_on:
-      - subrion
+      - php-fpm
     volumes:
-      - ./apache-vhost:/bitnami/apache/conf/vhosts
+      - ./apache-vhost/subrion.conf:/bitnami/apache/conf/vhosts/subrion.conf:ro
       - ./subrion:/app
 ```
 
