@@ -42,9 +42,13 @@ unzip latest.zip -d subrion
 We need to provide write access to a few directories to ensure that all installation checks pass successfully.
 
 ```bash
+mkdir -p subrion/{tmp,modules,uploads,includes,backup}
+chmod -R 775 subrion/{uploads,modules,includes,backup}
 chmod 1777 subrion/tmp
-chmod 755 subrion/{uploads,includes,backup,plugins}
+docker run -v $PWD/subrion:/app bitnami/apache chown -R :daemon /app/
 ```
+
+> *The last command updates the group ownership of the application directory to the `daemon` group. This ensures that the daemon processes running inside the containers can access the subrion application.*
 
 ### Step 2: Create a VirtualHost
 
@@ -94,31 +98,35 @@ Copy the definition below and save it as `docker-compose.yml` in your project di
 The following `docker-compose.yml` file will be used to orchestrate the launch of the MariaDB, PHP-FPM and Apache containers using docker-compose.
 
 ```yaml
-mariadb:
-  image: bitnami/mariadb:10.1.13-r0
-  environment:
-    - MARIADB_USER=subrion
-    - MARIADB_PASSWORD=my-password
-    - MARIADB_DATABASE=subriondb
-  volumes:
-    - ./mariadb-data:/bitnami/mariadb
+version: '2'
 
-subrion:
-  image: bitnami/php-fpm
-  links:
-    - mariadb:mariadb
-  volumes:
-    - ./subrion:/app
+services:
+  mariadb:
+    image: bitnami/mariadb:10.1.25-r0
+    environment:
+      - MARIADB_ROOT_PASSWORD=root-password
+      - MARIADB_USER=subrion
+      - MARIADB_PASSWORD=my-password
+      - MARIADB_DATABASE=subriondb
+    volumes:
+      - ./mariadb-data:/bitnami/mariadb
 
-apache:
-  image: bitnami/apache
-  ports:
-    - 80:80
-  links:
-    - subrion:php-fpm
-  volumes:
-    - ./apache-vhost:/bitnami/apache/conf/vhosts
-    - ./subrion:/app
+  php-fpm:
+    image: bitnami/php-fpm:5.6.31-r0
+    depends_on:
+      - mariadb
+    volumes:
+      - ./subrion:/app
+
+  apache:
+    image: bitnami/apache:2.4.27-r0
+    ports:
+      - 80:80
+    depends_on:
+      - subrion
+    volumes:
+      - ./apache-vhost:/bitnami/apache/conf/vhosts
+      - ./subrion:/app
 ```
 
 In the docker compose definition we specified the `MARIADB_USER`, `MARIADB_PASSWORD` and `MARIADB_DATABASE` parameters in the environment of the MariaDB container. The MariaDB container uses these parameters to setup a user and database on the first run. The same credentials should be used to complete the database connection setup in Subrion. The volume mounted at the `/bitnami/mariadb` path of the container ensures persistence of the MariaDB data.
