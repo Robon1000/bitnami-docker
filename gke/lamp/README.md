@@ -68,7 +68,7 @@ $ docker build -t gcr.io/<google-project-name>/myapp-php .
 Then push this image to the Google Container Registry:
 
 ```bash
-$ gcloud docker push gcr.io/<google-project-name>/myapp-php
+$ gcloud docker -- push gcr.io/<google-project-name>/myapp-php
 ```
 
 ### Apache image
@@ -91,7 +91,7 @@ $ docker build -t gcr.io/<google-project-name>/myapp-apache .
 Then push this image to the Google Container Registry:
 
 ```bash
-$ gcloud docker push gcr.io/<google-project-name>/myapp-apache
+$ gcloud docker -- push gcr.io/<google-project-name>/myapp-apache
 ```
 
 ## Create your cluster
