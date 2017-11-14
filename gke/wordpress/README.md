@@ -68,7 +68,7 @@ $ docker build -t gcr.io/<google-project-name>/wordpress-php .
 Then push this image to the Google Container Registry:
 
 ```bash
-$ gcloud docker push -- gcr.io/<google-project-name>/wordpress-php
+$ gcloud docker -- push gcr.io/<google-project-name>/wordpress-php
 ```
 
 ### Apache image
@@ -91,7 +91,7 @@ $ docker build -t gcr.io/<google-project-name>/wordpress-apache .
 Then push this image to the Google Container Registry:
 
 ```bash
-$ gcloud docker push -- gcr.io/<google-project-name>/wordpress-apache
+$ gcloud docker -- push gcr.io/<google-project-name>/wordpress-apache
 ```
 
 ## Create your cluster
