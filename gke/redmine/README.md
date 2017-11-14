@@ -70,7 +70,7 @@ $ docker build -t gcr.io/<google-project-name>/redmine .
 Then push this image to the Google Container Registry:
 
 ```bash
-$ gcloud docker push gcr.io/<google-project-name>/redmine
+$ gcloud docker push -- gcr.io/<google-project-name>/redmine
 ```
 
 ## Create your cluster
